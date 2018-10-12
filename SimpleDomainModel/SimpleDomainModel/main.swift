@@ -27,12 +27,52 @@ public struct Money {
   public var amount : Int
   public var currency : String
   
+    init(amount: Int, currency: String) {
+        self.amount = amount
+        self.currency = currency
+    }
+    
+    
   public func convert(_ to: String) -> Money {
+    var newAmount = 0
+    
+    switch (currency, to) {
+    case ("USD", "GBP"):
+        newAmount = (Int(Double(self.amount) / 2.0))
+    case ("USD", "EUR"):
+        newAmount = (Int(Double(self.amount) * 1.5))
+    case ("USD", "CAN"):
+        newAmount = (Int(Double(self.amount) * 1.25))
+    case ("GBP", "USD"):
+        newAmount = (Int(Double(self.amount) * 2.0))
+    
+    case ("EUR","USD"):
+        newAmount = (Int(Double(self.amount) / 1.5))
+    
+    case ("CAN","USD"):
+        newAmount = (Int(Double(self.amount) / 1.5))
+    default:
+        newAmount = (Int(Double(self.amount)))
+    }
+    
+    return Money(amount: newAmount, currency: to)
+    
   }
+    
   
   public func add(_ to: Money) -> Money {
+    let convertedMoney = self.convert(to.currency)
+    let newAmount = convertedMoney.amount + to.amount
+    
+    return Money(amount: newAmount, currency: to.currency)
   }
+    
   public func subtract(_ from: Money) -> Money {
+    let convertedMoney = self.convert(from.currency)
+    let newAmount = from.amount - convertedMoney.amount
+    
+    return Money(amount: newAmount, currency: from.currency)
+    
   }
 }
 
@@ -49,9 +89,17 @@ open class Job {
   }
   
   public init(title : String, type : JobType) {
+    self.title = title
+    self.type = type
+    
   }
   
   open func calculateIncome(_ hours: Int) -> Int {
+    var income = 0
+    
+    
+    return income
+    
   }
   
   open func raise(_ amt : Double) {
