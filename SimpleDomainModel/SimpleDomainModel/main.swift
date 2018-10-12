@@ -50,7 +50,7 @@ public struct Money {
         newAmount = (Int(Double(self.amount) / 1.5))
     
     case ("CAN","USD"):
-        newAmount = (Int(Double(self.amount) / 1.5))
+        newAmount = (Int(Double(self.amount) / 1.25))
     default:
         newAmount = (Int(Double(self.amount)))
     }
@@ -101,7 +101,7 @@ open class Job {
     case .Salary(let val):
         return val
   }
-  
+}
 func raise(_ amt : Double) {
     switch self.type {
     case .Hourly(let val):
@@ -111,12 +111,13 @@ func raise(_ amt : Double) {
     }
   }
     
+}
     
     
 ////////////////////////////////////
 // Person
 //
-public class Person {
+open class Person {
   open var firstName : String = ""
   open var lastName : String = ""
   open var age : Int = 0
@@ -166,7 +167,7 @@ public class Person {
 ////////////////////////////////////
 // Family
 //
-public class Family {
+open class Family {
   fileprivate var members : [Person] = []
   
   public init(spouse1: Person, spouse2: Person) {
@@ -190,17 +191,19 @@ public class Family {
   }
   
     open func householdIncome() -> Int {
-        var totalHouseIncome = 0
+        var total = 0
         for member in members {
             if member.job != nil {
                 switch member.job!.type {
                 case .Salary(let val):
-                    totalHouseIncome = totalHouseIncome + val
+                    total = total + val
                 case .Hourly(let val):
-                    totalHouseIncome = totalHouseIncome + Int(val * Double(2000))
+                    total = total + Int(val * Double(2000))
                 }
             }
         }
-        return totalHouseIncome
+        return total
     }
+    
 }
+
