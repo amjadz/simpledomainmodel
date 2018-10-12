@@ -95,17 +95,24 @@ open class Job {
   }
   
   open func calculateIncome(_ hours: Int) -> Int {
-    var income = 0
-    
-    
-    return income
-    
+    switch  self.type {
+    case .Hourly(let val):
+        return Int(val) * hours
+    case .Salary(let val):
+        return val
   }
   
-  open func raise(_ amt : Double) {
+func raise(_ amt : Double) {
+    switch self.type {
+    case .Hourly(let val):
+        self.type = JobType.Hourly(val + amt)
+    case .Salary(let val):
+        self.type = JobType.Salary(val + Int(amt))
+    }
   }
-}
-
+    
+    
+    
 ////////////////////////////////////
 // Person
 //
