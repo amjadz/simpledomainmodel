@@ -116,22 +116,38 @@ func raise(_ amt : Double) {
 ////////////////////////////////////
 // Person
 //
-open class Person {
+public class Person {
   open var firstName : String = ""
   open var lastName : String = ""
   open var age : Int = 0
 
+    
+    public init(firstname: String, lastName: String, age: Int){
+        self.firstName = firstname
+        self.lastName = lastName
+        self.age = age
+        
+    }
+    
+    
   fileprivate var _job : Job? = nil
   open var job : Job? {
-    get { }
+    get {return _job}
     set(value) {
+        if self.age >= 16{
+            _job = value
+        }
+        
     }
   }
   
   fileprivate var _spouse : Person? = nil
   open var spouse : Person? {
-    get { }
+    get {return _spouse}
     set(value) {
+        if self.age >= 18{
+            _spouse = value
+        }
     }
   }
   
@@ -142,26 +158,49 @@ open class Person {
   }
   
   open func toString() -> String {
+    return "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(String(describing: _job)) spouse:\(String(describing: _spouse))]"
+
   }
 }
 
 ////////////////////////////////////
 // Family
 //
-open class Family {
+public class Family {
   fileprivate var members : [Person] = []
   
   public init(spouse1: Person, spouse2: Person) {
+    if spouse1.spouse == nil && spouse2.spouse == nil {
+        spouse1.spouse = spouse2
+        spouse2.spouse = spouse1
+        self.members.append(spouse2)
+        self.members.append(spouse1)
+        
+    }
   }
   
   open func haveChild(_ child: Person) -> Bool {
+    if members[0].age >= 21 || members[1].age >= 21 {
+        members.append(child)
+        return true
+    }
+    
+    return false
+    
   }
   
-  open func householdIncome() -> Int {
-  }
+    open func householdIncome() -> Int {
+        var totalHouseIncome = 0
+        for member in members {
+            if member.job != nil {
+                switch member.job!.type {
+                case .Salary(let val):
+                    totalHouseIncome = totalHouseIncome + val
+                case .Hourly(let val):
+                    totalHouseIncome = totalHouseIncome + Int(val * Double(2000))
+                }
+            }
+        }
+        return totalHouseIncome
+    }
 }
-
-
-
-
-
